@@ -1,0 +1,559 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   INSECTRON — SANCTUARY BIO-DOME DESIGN SYSTEM TOKENS
+   Inspired by: Stylized Forest Ruins, Chiseled Stone & Tactile Toy-Bugs
+   ========================================================================== */
+
+@layer base {
+  :root {
+    /* 1. Surface & Stone Palette (from image_5d0de2 & image_5d0dfb) */
+    --bg-sanctuary-void: #0f191e;
+    --bg-sanctuary-deep: #121E24;
+    --bg-sanctuary-canopy: #16262e;
+    --surface-slate-primary: #1B2C35;
+    --surface-slate-base: rgba(25, 42, 51, 0.94);
+    --surface-slate-card: #213641;
+    --surface-slate-elevated: #243B47;
+    --surface-slate-hover: #2E4A58;
+    --surface-moss-inset: #19302c;
+    --surface-specimen-mint: #A6E3C5; /* Signature backdrop from image_5d0ddf */
+    --surface-specimen-dark: #1F3F37;
+
+    /* 2. Text & Contrast Hierarchy */
+    --text-primary: #F4F9F5;
+    --text-ivory: #f4f9f5;
+    --text-secondary: #B2C8CE;
+    --text-sage-secondary: #b5ced4;
+    --text-muted: #74929B;
+    --text-slate-muted: #7897a1;
+    --text-dark-ink: #122128;
+
+    /* 3. Semantic Tactical Accents */
+    --accent-lantern-gold: #FFB838;      /* Primary CTA, King, Active, Signature */
+    --accent-lantern-deep: #C87A12;
+    --accent-lantern-shadow: #b8730e;
+    --accent-lantern-glow: rgba(255, 184, 56, 0.28);
+
+    --accent-crystal-cyan: #3CE8FF;      /* Bio-Crystal Energy, Shield, Info */
+    --accent-meadow-mint: #5CE6A0;       /* Move Tiles, Player Jaster, Ready */
+    --accent-meadow-shadow: #258f5b;
+
+    --accent-scorpion-coral: #F05A46;    /* Attack Tiles, Rival Jin Red, Danger */
+    --accent-scorpion-shadow: #a32c1d;
+
+    --accent-amethyst-tier: #B36BFF;     /* Tier S Badge, Confusion Status */
+    --accent-dragonfly-violet: #b36bff;
+
+    /* 4. Stone Bevels, Borders & Shadows */
+    --border-stone-light: #3D5C6B;
+    --border-stone-dark: #0D171C;
+    --border-chisel-top: #436778;
+    --border-chisel-side: #2e4957;
+    --border-chisel-bottom: #0d171c;
+    --shadow-stone-slab: 0 5px 0 #0d171c, 0 10px 24px rgba(6, 12, 15, 0.65);
+    --shadow-button-tactile: 0 4px 0 var(--border-chisel-bottom), 0 6px 12px rgba(0, 0, 0, 0.35);
+
+    /* 5. Geometry & Spacing */
+    --radius-stone-panel: 14px;
+    --radius-stone-card: 10px;
+    --radius-toy-pill: 999px;
+    --font-display: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-sans: 'DM Sans', 'Plus Jakarta Sans', system-ui, sans-serif;
+    --transition-snappy: 160ms cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* Legacy alias mapping for smooth transition */
+    --neo-ink: #121E24;
+    --neo-panel: #1B2C35;
+    --neo-panel-raised: #243B47;
+    --neo-border: #3D5C6B;
+    --neo-cream: #F4F9F5;
+    --neo-muted: #B2C8CE;
+    --neo-amber: #FFB838;
+    --neo-mint: #5CE6A0;
+    --neo-coral: #F05A46;
+    --neo-disabled: #74929B;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-sanctuary-deep);
+    color: var(--text-ivory);
+    user-select: none;
+    -webkit-user-select: none;
+  }
+}
+
+.font-arcade {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+.font-esports {
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
+}
+
+.font-num {
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Chiseled stone text shadow for Hero & Display headings */
+.text-stroke-dark {
+  paint-order: stroke fill;
+  -webkit-text-stroke: 2px #0D171C;
+  text-shadow: 0 3px 0 #0D171C;
+}
+
+.text-stroke-thick {
+  paint-order: stroke fill;
+  -webkit-text-stroke: 3px #0D171C;
+  text-shadow: 0 4px 0 #0D171C;
+}
+
+/* ==========================================================================
+   1. CHISELED STONE PANELS & CONTAINERS (Title, Squad Builder, Battle HUD)
+   ========================================================================== */
+.sanctuary-panel,
+.squad-panel,
+.hud-card,
+.modal-card,
+.neo-panel {
+  background: linear-gradient(180deg, rgba(38, 63, 77, 0.96) 0%, rgba(23, 39, 48, 0.98) 100%);
+  border-top: 2px solid var(--border-chisel-top);
+  border-left: 1px solid var(--border-chisel-side);
+  border-right: 1px solid var(--border-chisel-side);
+  border-bottom: 4px solid var(--border-chisel-bottom);
+  border-radius: var(--radius-stone-panel);
+  box-shadow: var(--shadow-stone-slab), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  color: var(--text-ivory);
+  font-family: var(--font-sans);
+}
+
+.neo-panel-raised {
+  background: linear-gradient(180deg, #2A4452 0%, #213641 100%);
+  border-top: 2px solid #4E788C;
+  border-left: 1px solid var(--border-chisel-side);
+  border-right: 1px solid var(--border-chisel-side);
+  border-bottom: 3px solid var(--border-chisel-bottom);
+  border-radius: var(--radius-stone-card);
+  box-shadow: 0 3px 0 #0D171C;
+}
+
+.neo-panel-inset {
+  background-color: var(--bg-sanctuary-deep);
+  border: 1.5px solid var(--border-chisel-side);
+  border-radius: var(--radius-stone-card);
+  box-shadow: inset 0 2px 4px rgba(8, 15, 20, 0.65);
+}
+
+/* ==========================================================================
+   2. SPECIMEN CARDS & MINT-SAGE PORTRAIT BOX (8pt Spatial & Semantic Affordance)
+   ========================================================================== */
+.neo-beast-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 7px 10px;
+  background: var(--surface-slate-card);
+  border-top: 1.5px solid var(--border-chisel-top);
+  border-left: 1px solid var(--border-chisel-side);
+  border-right: 1px solid var(--border-chisel-side);
+  border-bottom: 3px solid var(--border-chisel-bottom);
+  border-radius: var(--radius-stone-card);
+  transition: transform var(--transition-snappy), border-color var(--transition-snappy), box-shadow var(--transition-snappy), background var(--transition-snappy);
+  cursor: pointer;
+}
+
+.neo-beast-card:hover {
+  background: var(--surface-slate-hover);
+  transform: translateY(-2px);
+  border-color: var(--accent-lantern-gold);
+}
+
+.neo-beast-card.is-selected,
+.neo-beast-card.is-king-slot,
+.neo-king-slot {
+  background: linear-gradient(180deg, #274240 0%, #1A2E2D 100%);
+  border: 2px solid var(--accent-lantern-gold);
+  border-bottom-width: 4px;
+  border-radius: var(--radius-stone-card);
+  box-shadow: 0 0 16px var(--accent-lantern-glow), 0 3px 0 #0D171C;
+}
+
+/* Assigned to another slot: calm inset state so unassigned cards remain the primary clickable affordance */
+.neo-beast-card.is-assigned {
+  background: linear-gradient(180deg, #182932 0%, #132129 100%);
+  border: 1px solid #2B4552;
+  border-bottom: 3px solid #0D171C;
+  opacity: 0.88;
+}
+
+.neo-beast-card.is-assigned:hover {
+  opacity: 1;
+  border-color: var(--accent-crystal-cyan);
+}
+
+/* Kotak ikon serangga dengan latar Mint-Sage khas referensi image_5d0ddf */
+.bug-portrait-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  background: linear-gradient(145deg, #b8edd2 0%, #8fd4b2 100%);
+  border: 2px solid #5aa882;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.45), 0 2px 4px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bug-portrait-box--sm {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #b8edd2 0%, #8fd4b2 100%);
+  border: 1.5px solid #5aa882;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.45), 0 1px 3px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bug-portrait-box--lg {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #b8edd2 0%, #8fd4b2 100%);
+  border: 2px solid #5aa882;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.5), 0 2px 5px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   3. TACTILE CARVED BUTTONS (Lantern Gold, Scorpion Coral, Stone Secondary)
+   ========================================================================== */
+.btn-tactile {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: var(--radius-stone-card);
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 100ms ease, filter 120ms ease, box-shadow 100ms ease;
+  white-space: nowrap;
+}
+
+/* CTA Utama & Signature Move (Warm Lantern Gold - image_5d0de2) */
+.btn-tactile--gold,
+.neo-btn-amber {
+  background: linear-gradient(180deg, #ffd269 0%, #ffb838 100%);
+  color: var(--text-dark-ink);
+  border: 2px solid #ffe5a3;
+  border-bottom: 4px solid var(--accent-lantern-shadow);
+  border-radius: var(--radius-stone-card);
+  box-shadow: 0 4px 0 #7a4903, 0 8px 16px rgba(255, 184, 56, 0.25);
+}
+.btn-tactile--gold:hover:not(:disabled),
+.neo-btn-amber:hover:not(:disabled) {
+  filter: brightness(1.06);
+  box-shadow: 0 4px 0 #7a4903, 0 0 16px var(--accent-lantern-glow);
+}
+
+/* Tombol Attack (Scorpion Coral - image_5d0ddf) */
+.btn-tactile--coral,
+.neo-btn-coral {
+  background: linear-gradient(180deg, #ff7866 0%, #f05a46 100%);
+  color: #ffffff;
+  border: 2px solid #ffa396;
+  border-bottom: 4px solid var(--accent-scorpion-shadow);
+  border-radius: var(--radius-stone-card);
+  box-shadow: 0 4px 0 #6e1a0f, 0 8px 16px rgba(240, 90, 70, 0.25);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+.btn-tactile--coral:hover:not(:disabled),
+.neo-btn-coral:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+/* Tombol Ally / Mint (Meadow Mint - image_5d0dfb) */
+.btn-tactile--mint,
+.neo-btn-mint {
+  background: linear-gradient(180deg, #79f2b5 0%, #52e59b 100%);
+  color: var(--text-dark-ink);
+  border: 2px solid #b8f7d6;
+  border-bottom: 4px solid var(--accent-meadow-shadow);
+  border-radius: var(--radius-stone-card);
+  box-shadow: 0 4px 0 #17613c, 0 8px 16px rgba(82, 229, 155, 0.22);
+}
+.btn-tactile--mint:hover:not(:disabled),
+.neo-btn-mint:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+/* Tombol Sekunder Batu Pahat (End Turn, Quick Battle, Back) */
+.btn-tactile--stone,
+.neo-btn-secondary {
+  background: linear-gradient(180deg, #314f5e 0%, #233a46 100%);
+  color: var(--text-ivory);
+  border: 2px solid #4a7285;
+  border-bottom: 4px solid #122028;
+  border-radius: var(--radius-stone-card);
+  box-shadow: 0 4px 0 #0b1419;
+}
+.btn-tactile--stone:hover:not(:disabled),
+.neo-btn-secondary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #395b6c 0%, #294452 100%);
+  border-color: var(--accent-crystal-cyan);
+}
+
+/* Disabled State — Sunken Chiseled Stone */
+.btn-tactile:disabled,
+.btn-tactile.is-disabled,
+.neo-btn-disabled {
+  background: #17262e;
+  color: var(--text-slate-muted);
+  border: 1.5px dashed #2e4754;
+  border-bottom-width: 2px;
+  border-radius: var(--radius-stone-card);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.78;
+}
+
+/* Tactile Physical Button Press (4px lip compresses to 1px on active press) */
+.arcade-press,
+.btn-tactile {
+  transition: transform 100ms ease, filter 120ms ease, box-shadow 100ms ease, border-color 120ms ease;
+}
+.arcade-press:hover:not(:disabled),
+.btn-tactile:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+.arcade-press:active:not(:disabled),
+.btn-tactile:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #0b1419 !important;
+}
+
+/* Tactile Toy Pill Badge (border-radius: 999px per Tahap 1.2 & 4.3) */
+.toy-pill {
+  border-radius: var(--radius-toy-pill);
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   4. ZERO-SCROLL SQUAD BUILDER LEFT COLUMN OPTIMIZATION
+   ========================================================================== */
+.squad-builder-left-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  max-height: calc(100dvh - 130px);
+  overflow: hidden;
+}
+
+/* Subtle stone-carved header texture */
+.neo-pixel-trim {
+  background-image: radial-gradient(rgba(166, 227, 197, 0.07) 1px, transparent 1px);
+  background-size: 10px 10px;
+}
+
+/* ==========================================================================
+   5. SANCTUARY BIO-DOME UNIFIED SLATE & TACTICAL HUD TOKENS
+   ========================================================================== */
+.font-stone-serif {
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+}
+
+/* Top-Left & Top-Right Carved Slate Pill Buttons (HOW TO PLAY / SETTINGS / 3D TAC / 2D) */
+.stone-pill-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: linear-gradient(180deg, #2A4452 0%, #1B2C35 100%);
+  border-top: 1.5px solid #4E788C;
+  border-left: 1px solid #3D5C6B;
+  border-right: 1px solid #3D5C6B;
+  border-bottom: 3px solid #0D171C;
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  transition: transform 120ms ease, filter 120ms ease, border-color 120ms ease;
+}
+.stone-pill-btn:hover:not(:disabled) {
+  filter: brightness(1.08);
+  border-color: var(--accent-lantern-gold);
+  transform: translateY(-1px);
+}
+.stone-pill-btn:active:not(:disabled) {
+  transform: translateY(2px);
+}
+
+/* Faction Banners (JASTER Mint-Sage on Left, JIN RED Terracotta-Coral on Right) */
+.faction-banner-ally {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px 6px 12px;
+  background: linear-gradient(90deg, #1E3F37 0%, #244B41 60%, #1B3831 100%);
+  border: 2px solid #5CE6A0;
+  border-bottom: 4px solid #0D1F1A;
+  border-radius: 999px 12px 12px 999px;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.faction-banner-rival {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 6px 12px 6px 16px;
+  background: linear-gradient(270deg, #3D2220 0%, #4A2926 60%, #331C1A 100%);
+  border: 2px solid #F05A46;
+  border-bottom: 4px solid #1C0D0C;
+  border-radius: 12px 999px 999px 12px;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Top-Center Semicircular Sanctuary Slate Arch Medallion */
+.sanctuary-arch-medallion {
+  position: relative;
+  background: radial-gradient(ellipse at 50% 0%, #2E4A58 0%, #1B2C35 65%, #121E24 100%);
+  border-left: 2px solid #436778;
+  border-right: 2px solid #436778;
+  border-bottom: 4px solid #0D171C;
+  border-radius: 0 0 140px 140px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.sanctuary-turn-ribbon {
+  position: relative;
+  background: linear-gradient(180deg, #243B47 0%, #16262E 100%);
+  border: 2px solid #FFB838;
+  border-bottom: 3px solid #9E600B;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 232, 179, 0.25);
+}
+
+/* Bottom-Left Sanctuary Slate Unit Inspector Card */
+.parchment-unit-card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(38, 63, 77, 0.96) 0%, rgba(23, 39, 48, 0.98) 100%);
+  border-top: 2px solid var(--border-chisel-top);
+  border-left: 1.5px solid var(--border-chisel-side);
+  border-right: 1.5px solid var(--border-chisel-side);
+  border-bottom: 4px solid var(--border-chisel-bottom);
+  border-radius: 14px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.68), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.parchment-scroll-inner {
+  background: linear-gradient(180deg, #182830 0%, #121E24 100%);
+  border: 1.5px solid #2E4957;
+  border-radius: 10px;
+  box-shadow: inset 0 2px 6px rgba(8, 15, 20, 0.65);
+  color: var(--text-primary);
+}
+
+/* Bottom-Center Chiseled Slate Tablet Buttons (ATTACK / END TURN / SQUAD [Q]) */
+.stone-tablet-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #2A4452 0%, #1B2C35 100%);
+  border-top: 2px solid #4E788C;
+  border-left: 1.5px solid #3D5C6B;
+  border-right: 1.5px solid #3D5C6B;
+  border-bottom: 4px solid #0D171C;
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+.stone-tablet-btn:hover:not(:disabled) {
+  filter: brightness(1.08);
+  border-color: var(--accent-crystal-cyan);
+  transform: translateY(-2px);
+}
+.stone-tablet-btn:active:not(:disabled) {
+  transform: translateY(2px);
+}
+.stone-tablet-btn:disabled {
+  background: #142229;
+  border: 1.5px dashed #29404D;
+  border-bottom: 3px solid #0B1418;
+  color: #6B8891;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+/* Balanced Lantern-Gold Signature Move Tablet (Harmonized with Dock — No Blinding Bloom) */
+.stone-tablet-special {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #334843 0%, #1E302D 100%);
+  border: 2px solid var(--accent-lantern-gold);
+  border-bottom: 4px solid #9E600B;
+  border-radius: 12px;
+  color: #FFF4DC;
+  font-family: var(--font-display);
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 184, 56, 0.24), inset 0 1px 0 rgba(255, 224, 130, 0.25);
+  cursor: pointer;
+  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+}
+.stone-tablet-special:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.65), 0 0 18px rgba(255, 184, 56, 0.4);
+}
+.stone-tablet-special:active:not(:disabled) {
+  transform: translateY(2px);
+}
+.stone-tablet-special:disabled {
+  background: #142229;
+  border: 1.5px dashed #29404D;
+  border-bottom: 3px solid #0B1418;
+  color: #6B8891;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+

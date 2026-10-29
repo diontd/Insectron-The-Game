@@ -1,0 +1,6 @@
+{
+  "name": "Insectron: Rogue Galaxy Tactical Arena",
+  "description": "Authentic web-based tactical chess-like Insectron board game inspired by Rogue Galaxy, featuring 12 playable Insector species, ring-out knockbacks, special moves, status ailments, and squad building.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
