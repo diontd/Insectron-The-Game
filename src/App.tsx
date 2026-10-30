@@ -1467,7 +1467,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Concise Action Buttons */}
+              {/* Primary Call to Action: Draft Squad & Customize 5 Bugs First */}
               <div className="mt-5 flex flex-col gap-2.5">
                 <button
                   type="button"
@@ -1477,18 +1477,22 @@ export default function App() {
                     triggerHaptic(18);
                     setShellState('select');
                   }}
-                  className="btn-tactile btn-tactile--gold w-full py-3 font-arcade text-base font-extrabold tracking-wider uppercase cursor-pointer text-center"
+                  className="btn-tactile btn-tactile--gold w-full py-3 font-arcade text-base font-extrabold tracking-wider uppercase cursor-pointer text-center shadow-[0_4px_14px_rgba(255,184,56,0.35)]"
                 >
-                  BUILD YOUR SQUAD ▶
+                  ⚔ PILIH 5 SERANGGA SAYA ▶
                 </button>
 
                 <button
                   type="button"
                   data-start="true"
-                  onClick={() => handleStartFreshMatch()}
-                  className="btn-tactile btn-tactile--stone w-full py-2.5 font-arcade text-sm font-extrabold uppercase cursor-pointer text-center text-[#52E59B]"
+                  onClick={() => {
+                    soundFX.playSelect();
+                    triggerHaptic(18);
+                    setShellState('select');
+                  }}
+                  className="btn-tactile btn-tactile--stone w-full py-2.5 font-arcade text-xs font-extrabold uppercase cursor-pointer text-center text-[#52E59B]"
                 >
-                  QUICK BATTLE
+                  ATUR FORMASI &amp; KING DULU
                 </button>
               </div>
 
@@ -1575,65 +1579,79 @@ export default function App() {
       />
 
       {/* ====================================================================
-          5. HOW TO PLAY MODAL (Accessible from Menu & Battle HUD)
+          5. HOW TO PLAY TACTICAL DRAWER (Non-Obtrusive Side Panel — 3D Board Remains Visible!)
           ==================================================================== */}
       {isHowToPlayOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#171923]/90 p-4"
+          className="fixed inset-0 z-50 flex items-stretch justify-end bg-black/45 backdrop-blur-[2px] transition-all"
           role="dialog"
           aria-modal="true"
           aria-label="How to Play Insectron"
         >
-          <div className="neo-panel w-full max-w-xl p-6 bg-[#252A38] text-[#F4E8C8]">
-            <div className="flex items-center justify-between pb-3 border-b-2 border-[#464D63]">
-              <h2 className="font-arcade text-2xl font-extrabold uppercase text-[#FFB547]">
-                HOW TO PLAY INSECTRON
-              </h2>
+          <div className="w-full max-w-md h-full bg-[#18252C]/95 backdrop-blur-xl border-l-2 border-[#3D5C6B] p-5 sm:p-6 text-[#F4F9F5] shadow-2xl flex flex-col justify-between overflow-y-auto">
+            <div>
+              <div className="flex items-center justify-between pb-3 border-b border-[#2E4957]">
+                <div className="flex items-center gap-2">
+                  <span className="text-[#FFB838] text-lg font-bold">📜</span>
+                  <h2 className="font-stone-serif text-lg sm:text-xl font-extrabold uppercase tracking-wide text-[#FFB838]">
+                    SANCTUARY TACTICS
+                  </h2>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsHowToPlayOpen(false)}
+                  className="arcade-press px-2.5 py-1 rounded bg-[#243B47] hover:bg-[#2E4A58] border border-[#436778] font-arcade text-[11px] font-bold text-[#F4F9F5] uppercase cursor-pointer"
+                >
+                  Close [Esc]
+                </button>
+              </div>
+
+              <div className="mt-4 space-y-3.5 text-xs sm:text-sm leading-relaxed">
+                <div className="p-3 rounded-xl bg-[#121E24]/90 border border-[#2E4957]">
+                  <h3 className="font-arcade text-xs sm:text-sm font-extrabold uppercase text-[#52E59B] flex items-center gap-1.5">
+                    <span>👑</span> 1. WIN RULE: DEFEAT OR RING-OUT RIVAL KING
+                  </h3>
+                  <p className="text-xs text-[#B2C8CE] mt-1.5 leading-normal">
+                    Setiap tim memiliki 1 pemimpin bermahkota <strong>👑 King</strong>. Kemenangan instan terjadi saat <strong>Rival King kalah</strong> (HP = 0) atau <strong>terlempar keluar papan (Ring-Out)</strong>! Lindungi King Anda di baris belakang altar.
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-xl bg-[#121E24]/90 border border-[#2E4957]">
+                  <h3 className="font-arcade text-xs sm:text-sm font-extrabold uppercase text-[#FFB838] flex items-center gap-1.5">
+                    <span>♟️</span> 2. STRATEGIC TURN LOOP
+                  </h3>
+                  <p className="text-xs text-[#B2C8CE] mt-1.5 leading-normal">
+                    Pilih serangga aktif $\rightarrow$ Gerakkan ke <strong className="text-[#52E59B]">Mint Rune Tile</strong> $\rightarrow$ Eksekusi <strong className="text-[#FF6E4A]">⚔ ATTACK</strong> atau <strong className="text-[#FFB838]">★ SIGNATURE MOVE</strong>. Jika salah melangkah, gunakan tombol <strong>↩ UNDO [Z]</strong> sebelum menyerang!
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-xl bg-[#121E24]/90 border border-[#2E4957]">
+                  <h3 className="font-arcade text-xs sm:text-sm font-extrabold uppercase text-[#3CE8FF] flex items-center gap-1.5">
+                    <span>🛡️</span> 3. EDGE GRIP & WALL SLAM
+                  </h3>
+                  <p className="text-xs text-[#B2C8CE] mt-1.5 leading-normal">
+                    Serangga dengan HP sehat (&gt; 50%, dan King &gt; 30%) memiliki <strong>Edge Grip</strong>! Jika terdorong ke tebing, karapas mereka akan mencengkeram pembatas dan menerima <em>Wall Slam Damage</em> tanpa langsung mati seketika.
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-xl bg-[#121E24]/90 border border-[#2E4957]">
+                  <h3 className="font-arcade text-xs sm:text-sm font-extrabold uppercase text-[#FF8E72] flex items-center gap-1.5">
+                    <span>⚡</span> 4. SIGNATURE CHARGES (3 USES)
+                  </h3>
+                  <p className="text-xs text-[#B2C8CE] mt-1.5 leading-normal">
+                    Setiap unit mengawali laga dengan <strong>3 Charge</strong> untuk jurus pamungkas (<em>Crushing Horn, Scissor Throw, Charm Beam</em>). Perhatikan busur tembakan proyektil 3D saat menargetkan lawan!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-5 pt-3 border-t border-[#2E4957] flex justify-end">
               <button
                 type="button"
                 onClick={() => setIsHowToPlayOpen(false)}
-                className="arcade-press px-3 py-1 neo-btn-secondary font-arcade text-xs font-bold uppercase cursor-pointer"
+                className="arcade-press px-5 py-2 rounded-lg bg-[#FFB838] hover:bg-[#FFC966] text-[#122128] font-arcade text-xs font-extrabold uppercase tracking-wider cursor-pointer shadow-lg"
               >
-                Close [Esc]
-              </button>
-            </div>
-
-            <div className="mt-4 space-y-3 text-sm leading-relaxed">
-              <div className="p-3 rounded bg-[#171923] border border-[#464D63]">
-                <h3 className="font-arcade text-sm font-extrabold uppercase text-[#83D6B0]">
-                  1. WIN CONDITION: PROTECT YOUR KING, DEFEAT RIVAL KING
-                </h3>
-                <p className="text-xs text-[#F4E8C8] mt-1">
-                  One bug in each 5-unit squad wears the <strong>👑 King Crown</strong>. You win immediately when you reduce the Rival King&apos;s HP to 0 OR knock the Rival King off the 5×6 Bio-Dome edge (<strong>Instant Ring-Out!</strong>).
-                </p>
-              </div>
-
-              <div className="p-3 rounded bg-[#171923] border border-[#464D63]">
-                <h3 className="font-arcade text-sm font-extrabold uppercase text-[#FFB547]">
-                  2. TURN LOOP: SELECT → MOVE → ATTACK OR SIGNATURE MOVE
-                </h3>
-                <p className="text-xs text-[#F4E8C8] mt-1">
-                  On your turn, select one of your living units. Click a <strong className="text-[#83D6B0]">Mint Tile</strong> to move, then trigger <strong>⚔ Attack</strong> or your unit&apos;s <strong>★ Signature Move</strong> against an enemy on a <strong className="text-[#EF7168]">Coral/Amber Tile</strong>.
-                </p>
-              </div>
-
-              <div className="p-3 rounded bg-[#171923] border border-[#464D63]">
-                <h3 className="font-arcade text-sm font-extrabold uppercase text-[#EF7168]">
-                  3. KNOCKBACK &amp; SIGNATURE CHARGES
-                </h3>
-                <p className="text-xs text-[#F4E8C8] mt-1">
-                  Heavy beetles have a high <strong>Knockback %</strong> that pushes enemies backward. Each bug also has limited <strong>Signature Charges</strong> (usually 3 per match) for high-impact 3D special moves like <em>Crushing Horn</em>, <em>Scissor Throw</em>, or <em>Charm Beam</em>.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 flex justify-end">
-              <button
-                type="button"
-                onClick={() => setIsHowToPlayOpen(false)}
-                className="arcade-press px-5 py-2 neo-btn-amber font-arcade text-sm font-extrabold uppercase cursor-pointer"
-              >
-                Got It ▶
+                Kembali ke Altar ▶
               </button>
             </div>
           </div>

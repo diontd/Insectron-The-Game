@@ -1045,6 +1045,22 @@ export const ArenaCanvas: React.FC<ArenaCanvasProps> = ({
       maxScale: 3.2,
     };
 
+    // 3D Combat Intent & Targeting Laser Arc between Selected Unit and Target
+    const targetingArcGeo = new THREE.BufferGeometry();
+    const targetingArcPoints = new Float32Array(30 * 3);
+    targetingArcGeo.setAttribute(
+      'position',
+      new THREE.BufferAttribute(targetingArcPoints, 3)
+    );
+    const targetingArcMat = new THREE.LineBasicMaterial({
+      color: 0xff6e4a,
+      transparent: true,
+      opacity: 0.88,
+    });
+    const targetingArcLine = new THREE.Line(targetingArcGeo, targetingArcMat);
+    targetingArcLine.visible = false;
+    vfxGroup.add(targetingArcLine);
+
     triggerShockwaveRef.current = (
       pos: THREE.Vector3,
       colorHex: string,
@@ -1141,9 +1157,20 @@ export const ArenaCanvas: React.FC<ArenaCanvasProps> = ({
     };
 
     // ========================================================================
-    // MANAGE 3D INSECTOR RIGS
+    // MANAGE 3D INSECTOR RIGS & DEFEAT DEATH CHOREOGRAPHY
     // ========================================================================
     const rigsMap = new Map<string, { rig: Insector3DRig; speciesId: string }>();
+    const dyingRigsMap = new Map<
+      string,
+      {
+        rig: Insector3DRig;
+        speciesId: string;
+        startTime: number;
+        duration: number;
+        deathPos: THREE.Vector3;
+        burstTriggered: boolean;
+      }
+    >();
     const unitsGroup = new THREE.Group();
     scene.add(unitsGroup);
 
@@ -1821,11 +1848,70 @@ export const ArenaCanvas: React.FC<ArenaCanvasProps> = ({
         }
       }
 
-      // Remove defeated rigs that are no longer in activeIds
+      // Remove or transition defeated rigs to dying animation state
       for (const [uid, entry] of rigsMap.entries()) {
         if (!activeIds.has(uid)) {
-          unitsGroup.remove(entry.rig.root);
+          // If not already in dying state, start death collapse animation (unless ring-out)
+          if (!dyingRigsMap.has(uid)) {
+            const deathPos = entry.rig.root.position.clone();
+            dyingRigsMap.set(uid, {
+              rig: entry.rig,
+              speciesId: entry.speciesId,
+              startTime: now,
+              duration: 950,
+              deathPos,
+              burstTriggered: false,
+            });
+          }
           rigsMap.delete(uid);
+        }
+      }
+
+      // Animate dying rigs (Death Stagger, Floor Collapse, and Bio-Energy Dissolution)
+      for (const [uid, deathInfo] of dyingRigsMap.entries()) {
+        const dp = Math.min(1, (now - deathInfo.startTime) / deathInfo.duration);
+        const { rig } = deathInfo;
+
+        if (!deathInfo.burstTriggered && dp >= 0.15) {
+          deathInfo.burstTriggered = true;
+          spawnBurstRef.current?.(
+            deathInfo.deathPos,
+            '#F05A46',
+            24,
+            5.2
+          );
+          triggerShockwaveRef.current?.(
+            deathInfo.deathPos,
+            '#F05A46',
+            2.2
+          );
+        }
+
+        // Collapse to floor: rotate body on pitch/roll + sink slightly + flicker fade
+        rig.selectionHalo.visible = false;
+        rig.crownGroup.visible = false;
+        rig.shieldDome.visible = false;
+        rig.bodyGroup.position.y = Math.max(
+          -0.12,
+          rig.baseY * (1 - dp) - dp * 0.18
+        );
+        rig.bodyGroup.rotation.z = Math.min(Math.PI / 2, dp * Math.PI * 0.65);
+        rig.bodyGroup.rotation.x = -Math.sin(dp * Math.PI) * 0.35;
+
+        // Dissolve material opacity
+        const dissolveAlpha = Math.max(0, 1 - Math.pow(dp, 1.8));
+        for (const mat of rig.materials) {
+          mat.transparent = true;
+          mat.opacity = dissolveAlpha;
+          if (dp < 0.4) {
+            mat.emissive.set('#ff3333');
+            mat.emissiveIntensity = (1 - dp / 0.4) * 0.85;
+          }
+        }
+
+        if (dp >= 1) {
+          unitsGroup.remove(rig.root);
+          dyingRigsMap.delete(uid);
         }
       }
 
@@ -1939,6 +2025,40 @@ export const ArenaCanvas: React.FC<ArenaCanvasProps> = ({
         traumaRef.current = Math.max(0, traumaRef.current - rawDt * 2.4);
       }
       camera.lookAt(currentLookAt);
+
+      // Update 3D Combat Intent Targeting Arc Line
+      if (
+        !curTitle &&
+        curSelected &&
+        curTargeted &&
+        !curTargeted.defeated &&
+        (curMode === 'move_or_attack' ||
+          curMode === 'attack_confirm' ||
+          curMode === 'special')
+      ) {
+        const fromPos = boardToWorld(curSelected.col, curSelected.row, 0.45);
+        const toPos = boardToWorld(curTargeted.col, curTargeted.row, 0.45);
+        const pts = targetingArcGeo.attributes.position.array as Float32Array;
+        const count = 30;
+        for (let i = 0; i < count; i++) {
+          const t = i / (count - 1);
+          const x = THREE.MathUtils.lerp(fromPos.x, toPos.x, t);
+          const z = THREE.MathUtils.lerp(fromPos.z, toPos.z, t);
+          const arcHeight = Math.sin(t * Math.PI) * 0.95;
+          const y = THREE.MathUtils.lerp(fromPos.y, toPos.y, t) + arcHeight;
+          pts[i * 3] = x;
+          pts[i * 3 + 1] = y;
+          pts[i * 3 + 2] = z;
+        }
+        targetingArcGeo.attributes.position.needsUpdate = true;
+        const arcHex = curMode === 'special' ? 0xffb838 : 0xff6e4a;
+        targetingArcMat.color.setHex(arcHex);
+        targetingArcMat.opacity =
+          0.75 + 0.25 * Math.sin(now * 0.01);
+        targetingArcLine.visible = true;
+      } else {
+        targetingArcLine.visible = false;
+      }
 
       // 5. Render 3D Scene
       renderer.render(scene, camera);
